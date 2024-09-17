@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-sqlalchemy = "*"
-pydantic = "*"
-fastapi = "*"
-uvicorn = "*"
+sqlalchemy = "==2.0.35"
+pydantic = "==2.9.2"
+fastapi = "==0.114.2"
+uvicorn = "==0.30.6"
 
 [dev-packages]
-ipykernel = "*"
+ipykernel = "==6.29.5"
 
 [requires]
 python_version = "3.12"
