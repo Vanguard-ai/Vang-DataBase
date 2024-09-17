@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, MetaData, Table, Column
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
-from models import TableModel, SQL_TYPES
+from .models import TableModel, SQL_TYPES
 
 class DatabaseManager:
     def __init__(self, database_url: str) -> None:
@@ -27,14 +27,13 @@ class DatabaseManager:
     def create_table(self, table_data: TableModel) -> str:
         try:
             columns_with_types = [
-                Column(col.name, SQL_TYPES[col.type]) for col in table_data.columns
+                Column(col.column_name, SQL_TYPES[col.column_type]) for col in table_data.columns
             ]
-
             new_table = Table(
-                table_data.name, self.metadata, *columns_with_types, extend_existing=True
+                table_data.table_name, self.metadata, *columns_with_types, extend_existing=True
             )
             new_table.create(self.engine)
-            return f"Table '{table_data.name}' created!"
+            return f"Table '{table_data.table_name}' created!"
         
         except SQLAlchemyError as e:
             raise RuntimeError(f"Error creating table '{table_data.name}': {e}")
