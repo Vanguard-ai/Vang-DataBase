@@ -14,3 +14,5 @@ ipykernel = "==6.29.5"
 
 [requires]
 python_version = "3.12"
+
+

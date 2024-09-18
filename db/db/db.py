@@ -1,7 +1,8 @@
 from sqlalchemy import create_engine, MetaData, Table, Column
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
-from .models import TableModel, SQL_TYPES
+from sqlalchemy.orm import sessionmaker
+from db.db.models.table_model import TableModel, SQL_TYPES
 
 class DatabaseManager:
     def __init__(self, database_url: str) -> None:
@@ -15,14 +16,14 @@ class DatabaseManager:
             self.Base.metadata.create_all(self.engine)
             return "Database created!"
         except SQLAlchemyError as e:
-            raise RuntimeError(f"Database created: {e}")
+            raise RuntimeError(f"Error creating database: {e}")
 
     def drop_database(self) -> str:
         try:
             self.Base.metadata.drop_all(self.engine)
             return "Database dropped!"
         except SQLAlchemyError as e:
-           raise RuntimeError(f"Error dropping database: {e}")
+            raise RuntimeError(f"Error dropping database: {e}")
 
     def create_table(self, table_data: TableModel) -> str:
         try:
@@ -46,3 +47,8 @@ class DatabaseManager:
         
         except SQLAlchemyError as e:
             raise RuntimeError(f"Error dropping table '{table_name}': {e}")
+
+# Configuración de la sesión de la base de datos
+DATABASE_URL = "sqlite:///./test.db"
+engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
