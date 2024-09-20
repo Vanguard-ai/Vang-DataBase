@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, MetaData, Table, Column
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy import inspect
 from db.db.models.table_model import TableModel, SQL_TYPES
 
 class DatabaseManager:
@@ -48,7 +48,17 @@ class DatabaseManager:
         except SQLAlchemyError as e:
             raise RuntimeError(f"Error dropping table '{table_name}': {e}")
 
-# Configuración de la sesión de la base de datos
-DATABASE_URL = "sqlite:///./test.db"
-engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+    def get_table_info(self, table_name: str) -> dict:
+        try:
+            inspector = inspect(self.engine)
+            columns_info = inspector.get_columns(table_name)
+            
+            table_info = {
+                'table_name': table_name,
+                'columns': [{'name': col['name'], 'type': col['type']} for col in columns_info]
+            }
+            
+            return table_info
+        except SQLAlchemyError as e:
+            raise RuntimeError(f"Error getting table info for '{table_name}': {e}")
+    
