@@ -4,7 +4,7 @@ from sqlalchemy import Integer, String, Float, Text, Boolean, Date, Enum
 from pydantic import BaseModel
 from pydantic import BaseModel, ConfigDict
 from sqlalchemy import Column, Integer, String, Float, Text, Boolean, Date, Enum
-from typing import Literal, List
+from typing import Literal
 
 SQL_TYPES = {
     "Integer": Integer,
@@ -28,14 +28,14 @@ EXAMPLE_TABLE = {
             }
         }
 
-class ColumnModel(BaseModel):
+class ColumnModelCreation(BaseModel):
     column_name: str
     column_type: Literal["Integer", "String", "Float", "Text", "Boolean", "Date", "Enum"]
 
 class TableModel(BaseModel):
     model_config = ConfigDict(json_schema_extra=EXAMPLE_TABLE)
     table_name: str
-    columns: List[ColumnModel]
+    columns: list[ColumnModelCreation]
 
 # Corregido: `metadata` debe ser un objeto de SQLAlchemy, no `engine`
 def create_table(table_model: TableModel, metadata: MetaData):
