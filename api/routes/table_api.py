@@ -1,8 +1,8 @@
-from fastapi import APIRouter,HTTPException, Body
+from fastapi import APIRouter,HTTPException
 from sqlalchemy.exc import SQLAlchemyError
 
 from db.db import DatabaseManager, TableModel
-import json
+
 table_router = APIRouter()
 
 table_manager = DatabaseManager("sqlite:///example.db")
