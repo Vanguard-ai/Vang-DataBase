@@ -9,9 +9,9 @@ db_manager = DatabaseManager("sqlite:///example.db")
 
 crud=CRUD(db_manager)
 
-@crud_router.post("/crud_add/{table_name}")
-async def add_element(table_name: str, data: InsertTableModel):
-    try:
+@crud_router.post("/crud_add/{table_name}") 
+async def add_element(table_name: str, data: InsertTableModel) -> dict[str, str]:
+    try: 
         result = crud.create_record(table_name=table_name,data=data)
         return {"message":result}
     except SQLAlchemyError as e:
@@ -19,7 +19,7 @@ async def add_element(table_name: str, data: InsertTableModel):
     
 
 @crud_router.post("/crud_query/{table_name}")
-async def query_element(table_name: str, filters: InsertTableModel = None):
+async def query_element(table_name: str, filters: InsertTableModel = None) -> dict:
     try:
         result = crud.read_record(table_name=table_name,filters=filters) 
         return result.model_dump()
@@ -28,7 +28,7 @@ async def query_element(table_name: str, filters: InsertTableModel = None):
     
 
 @crud_router.delete("/crud_delete/{table_name}")
-async def delete_element(table_name: str, filters: InsertTableModel):
+async def delete_element(table_name: str, filters: InsertTableModel) -> dict[str, str]:
     try:
         result = crud.delete_record(table_name=table_name, filters=filters)
         return {"message":result}
@@ -39,7 +39,7 @@ async def delete_element(table_name: str, filters: InsertTableModel):
 @crud_router.post("/crud_update/{table_name}")
 async def update_element(table_name: str, 
                          filters: InsertTableModel, 
-                         data: InsertTableModel):
+                         data: InsertTableModel) -> dict[str, str]:
     try:
         result = crud.update_record(table_name=table_name,filters=filters,data=data)
         return {"message": result}

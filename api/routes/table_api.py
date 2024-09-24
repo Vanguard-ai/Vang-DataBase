@@ -19,7 +19,7 @@ async def create_table(table_data: TableModel) -> dict[str, str]:
 
 
 @table_router.delete("/drop_table/{table_name}")
-async def drop_table(table_name: str)-> dict[str, str]:
+async def drop_table(table_name: str) -> dict[str, str]:
     try:
         result = table_manager.drop_table(table_name)
         return {"message": result}

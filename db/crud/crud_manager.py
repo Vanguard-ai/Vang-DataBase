@@ -31,9 +31,12 @@ class CRUD:
             if filters:
                 data_dict = {col.column_name: col.data for col in filters.table_to_insert}
                 query = query.filter_by(**data_dict)
-            query_result=[dict(row._mapping) for row in query.all()]
+            query_result = [dict(row._mapping) for row in query.all()]
+            
             return QueryTableModel(table_query=[
-                ColumnModel(column_name=k,data=v) for k,v in query_result[0].items()
+                ColumnModel(column_name=key, data=value) 
+                for result in query_result 
+                for key, value in result.items()
             ])
         
         except SQLAlchemyError as e:
