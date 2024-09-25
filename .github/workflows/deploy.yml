@@ -36,6 +36,6 @@ jobs:
             docker stop my-fastapi-app || true
             docker rm my-fastapi-app || true
             
-            docker pull my-fastapi-app || true
+            docker pull my-fastapi-app || true 
 
             docker run -d -p 8000:8000 --name my-fastapi-app my-fastapi-app
