@@ -10,3 +10,4 @@ app.include_router(crud_router, prefix="/crud", tags=["crud"])
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
+    
